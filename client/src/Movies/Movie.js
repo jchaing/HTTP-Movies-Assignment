@@ -1,6 +1,6 @@
-import React from "react";
-import axios from "axios";
-import MovieCard from "./MovieCard";
+import React from 'react';
+import axios from 'axios';
+import MovieCard from './MovieCard';
 export default class Movie extends React.Component {
   constructor(props) {
     super(props);
@@ -31,6 +31,19 @@ export default class Movie extends React.Component {
     addToSavedList(this.state.movie);
   };
 
+  handleDelete = e => {
+    e.preventDefault();
+    axios
+      .delete(`http://localhost:5000/api/movies/${this.state.movie.id}`)
+      .then(res => {
+        console.log(res);
+        this.props.history.push('/')
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   render() {
     if (!this.state.movie) {
       return <div>Loading movie information...</div>;
@@ -49,60 +62,8 @@ export default class Movie extends React.Component {
         >
           Edit
         </button>
+        <button onClick={this.handleDelete}>Delete</button>
       </div>
     );
   }
 }
-
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-// import MovieCard from './MovieCard';
-
-// const Movie = props => {
-//   const [movie, setMovie] = useState('');
-
-//   useEffect(() => {
-//     const fetchMovie = id => {
-//       axios
-//         .get(`http://localhost:5000/api/movies/${id}`)
-//         .then(res => {
-//           setMovie(res.data)
-//           console.log(movie);
-//         })
-//         .catch(err => console.log(err.response));
-//     };
-
-//     fetchMovie(props.match.params.id);
-
-//     console.log(props.match.params.id);
-//   }, []);
-
-//   // componentWillReceiveProps(newProps) {
-//   //   if (this.props.match.params.id !== newProps.match.params.id) {
-//   //     this.fetchMovie(newProps.match.params.id);
-//   //   }
-//   // }
-
-//   const saveMovie = () => {
-//     const addToSavedList = props.addToSavedList;
-//     addToSavedList(movie);
-//   };
-
-//   if (!movie) {
-//     return <div>Loading movie information...</div>;
-//   }
-//   // console.log(this.state.movie)
-//   return (
-//     <div className="save-wrapper">
-//       <MovieCard movie={movie} />
-//       <div className="save-button" onClick={saveMovie}>
-//         Save
-//       </div>
-//       <button onClick={() => props.history.push(`/update-movie/${movie.id}`)}>
-//         Edit
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default Movie;

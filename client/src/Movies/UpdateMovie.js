@@ -13,7 +13,6 @@ const UpdateMovie = props => {
   console.log(props);
 
   useEffect(() => {
-    // debugger;
     const movieToEdit = props.movies.find(
       movie => `${movie.id}` === props.match.params.id
     );
@@ -25,7 +24,6 @@ const UpdateMovie = props => {
     e.persist();
     let value = e.target.value;
     if (e.target.name === 'stars') {
-      // setMovie({...movie, stars: [...movie.stars, value]});
       console.log(e.target.name)
       value = [value]
       setMovie({...movie, [e.target.name]: [...movie.stars, value]});
@@ -40,10 +38,7 @@ const UpdateMovie = props => {
       .put(`http://localhost:5000/api/movies/${movie.id}`, movie)
       .then(res => {
         console.log(res);
-        // props.updateMovies(res.data);
         props.history.push('/')
-        props.history.push(`/movies/${movie.id}`)
-        // props.history.goBack();
       })
       .catch(err => console.log(err))
   }
